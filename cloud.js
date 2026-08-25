@@ -1,8 +1,10 @@
 (()=>{
   const localSave=save,localSaveI=saveI;
+  const localSaveHidden=typeof saveHidden==='function'?saveHidden:null;
   const localPromoSave=typeof savePromo==='function'?savePromo:null;
   const localDataSnapshot=JSON.parse(JSON.stringify(data));
   const localImageSnapshot={...over};
+  const localHiddenSnapshot=typeof hidden!=='undefined'?JSON.parse(JSON.stringify(hidden)):{};
   const localPromoSnapshot=typeof promo!=='undefined'?JSON.parse(JSON.stringify(promo)):null;
   let cloudReady=false,saveTimer=null,saving=false,pending=false;
 
@@ -30,7 +32,7 @@
     saving=true;pending=false;
     try{
       await migrateImages();
-      const payload={data,images:over,promo:typeof promo!=='undefined'?promo:null,updatedAt:new Date().toISOString()};
+      const payload={data,images:over,hidden:typeof hidden!=='undefined'?hidden:{},promo:typeof promo!=='undefined'?promo:null,updatedAt:new Date().toISOString()};
       const r=await fetch('/api/catalog',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       if(!r.ok)throw new Error('No se pudo guardar en nube');
       cloudBadge('☁ Nube sincronizada',true);
@@ -40,6 +42,7 @@
 
   save=function(){localSave();scheduleCloud()};
   saveI=function(){const ok=localSaveI();if(ok)scheduleCloud();return ok};
+  if(localSaveHidden)saveHidden=function(){localSaveHidden();scheduleCloud()};
   if(localPromoSave)savePromo=function(){localPromoSave();scheduleCloud()};
 
   async function initCloud(){
@@ -53,13 +56,16 @@
       if(remote&&remote.data){
         data=remote.data;
         over={...(remote.images||{}),...localImageSnapshot};
+        if(typeof hidden!=='undefined')hidden=remote.hidden||localHiddenSnapshot||{};
         if(typeof promo!=='undefined'&&remote.promo)promo=remote.promo;
       }else{
         data=localDataSnapshot;over={...localImageSnapshot};
+        if(typeof hidden!=='undefined')hidden=localHiddenSnapshot||{};
         if(typeof promo!=='undefined'&&localPromoSnapshot)promo=localPromoSnapshot;
       }
       localStorage.setItem('ivettData',JSON.stringify(data));
       localStorage.setItem('ivettImgs',JSON.stringify(over));
+      if(typeof hidden!=='undefined')localStorage.setItem('ivettHidden',JSON.stringify(hidden));
       if(typeof promo!=='undefined')localStorage.setItem('ivettPromo',JSON.stringify(promo));
       render();if(typeof promoRender==='function')promoRender();
       await migrateImages();await pushCloud();
