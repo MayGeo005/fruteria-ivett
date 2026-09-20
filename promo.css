@@ -17,3 +17,10 @@
 
 @media(max-width:950px){.promoSheet{transform-origin:top center}.workspace{overflow:auto}}
 @media print{body{background:#fff}.app{display:block}.app aside,.top,.panel,#sheet{display:none!important}.body{display:block!important;padding:0!important}.workspace{overflow:visible!important}.promoSheet{display:block!important;width:8.5in!important;height:11in!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important;page-break-after:avoid;break-after:avoid;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}@page{size:letter portrait;margin:0}}
+
+/* Marco frutal: asegurar visibilidad sobre el flyer */
+#promoSheet{isolation:isolate!important}
+#promoSheet>.promoFrameBg{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;opacity:1!important;visibility:visible!important;z-index:20!important;pointer-events:none!important}
+#promoSheet:before{display:none!important}
+#promoSheet .promoHero,#promoSheet .promoHeadline,#promoSheet .promoPriceBadge,#promoSheet .promoInstruction,#promoSheet #promoGrid,#promoSheet .promoFooter{z-index:3!important}
+#promoSheet .ivettFooter{z-index:30!important}
