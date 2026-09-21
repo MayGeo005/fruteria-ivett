@@ -20,7 +20,7 @@
 
 /* Marco frutal: asegurar visibilidad sobre el flyer */
 #promoSheet{isolation:isolate!important}
-#promoSheet>.promoFrameBg{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill!important;opacity:1!important;visibility:visible!important;z-index:20!important;pointer-events:none!important}
+#promoSheet>.promoFrameBg{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;background-image:inherit!important;background-size:100% 100%!important;background-repeat:no-repeat!important;background-position:center!important;opacity:1!important;visibility:visible!important;z-index:20!important;pointer-events:none!important}
 #promoSheet:before{display:none!important}
 #promoSheet .promoHero,#promoSheet .promoHeadline,#promoSheet .promoPriceBadge,#promoSheet .promoInstruction,#promoSheet #promoGrid,#promoSheet .promoFooter{z-index:3!important}
 #promoSheet .ivettFooter{z-index:30!important}
